@@ -1,13 +1,18 @@
 import * as PIXI from "pixi.js"
-import { App } from "./Game"
+import { Game } from "./Game"
 
 export class UI {
-    private scoreField: PIXI.Text
-    private app:App
-    private score:number = 0
 
-    constructor(app: App) { 
-        this.app = app
+    private scoreField: PIXI.Text
+    private hiScoreField: PIXI.Text
+    private messageField: PIXI.Text
+    private game:Game
+    private score:number = 0
+    private hiscore:number = 0
+    private gameOverListener: EventListener
+
+    constructor(game:Game) { 
+        this.game = game
 
         const style = new PIXI.TextStyle({
             fontFamily: 'Arial',
@@ -20,15 +25,49 @@ export class UI {
         this.scoreField.x = 20
         this.scoreField.y = 20
 
-        this.app.pixi.stage.addChild(this.scoreField)
+        this.hiScoreField = new PIXI.Text(`High Score : ${this.hiscore}`, style)
+        this.hiScoreField.x = 680
+        this.hiScoreField.y = 20
+
+        const gameOverStyle = new PIXI.TextStyle({
+            fontFamily: 'Arial',
+            fontSize: 55,
+            align:"center", 
+            fontWeight: 'bold',
+            fill: ['#006677'],
+            wordWrap: true,
+            wordWrapWidth: 400
+        })
+
+        this.messageField = new PIXI.Text('', gameOverStyle)
+        this.messageField.x = 260
+        this.messageField.y = 140
+        
+        this.game.pixi.stage.addChild(this.scoreField)
+        this.game.pixi.stage.addChild(this.hiScoreField)
+        this.game.pixi.stage.addChild(this.messageField)
+
+        this.gameOverListener = (e:Event) => this.restartGame(e)
     }
 
-    public updateScore(s:number) {
+    public addScore(s:number) {
         this.score += s
         this.scoreField.text = `Score : ${this.score}`
+        this.hiScoreField.text = `High Score : ${this.hiscore}`
+    }
+    
+    public showGameOver(b:boolean){
+        if(b) {
+            window.addEventListener("keydown", this.gameOverListener)
+        } else {
+            window.removeEventListener("keydown", this.gameOverListener)
+        }
+        this.messageField.text = (b) ? "GAME OVER press space to restart" : ""
     }
 
-    public gameOver(){
-        this.scoreField.text = `GAME OVER!!! Score : ${this.score}`
+    private restartGame(e:Event){
+        if (this.score > this.hiscore) this.hiscore = this.score
+        this.score = 0
+        this.game.toggleGameOver(false)
     }
 }
