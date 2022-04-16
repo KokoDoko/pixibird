@@ -6,6 +6,7 @@
 
 ## TODO
 
+- Glitch in score keeping
 - Difficulty increase: more speed, smaller gaps
 - More pipes
 
