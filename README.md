@@ -1,14 +1,13 @@
 # Pixi Bird
 
-🦆 Creating Flappy Bird with PixiJS and Typescript
+🦆 Creating Flappy Bird with PixiJS and Typescript. [Play the demo here](https://kokodoko.github.io/pixibird/)
 
 ***Work in progress***
 
 ## TODO
 
-- Pipes distance not correct
-- Score, highscore display
-- Game Over Screen
+- Difficulty increase: more speed, smaller gaps
+- More pipes
 
 <br>
 <br>
