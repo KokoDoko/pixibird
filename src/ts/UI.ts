@@ -53,21 +53,20 @@ export class UI {
     public addScore(s:number) {
         this.score += s
         this.scoreField.text = `Score : ${this.score}`
-        this.hiScoreField.text = `High Score : ${this.hiscore}`
     }
     
-    public showGameOver(b:boolean){
-        if(b) {
-            window.addEventListener("keydown", this.gameOverListener)
-        } else {
-            window.removeEventListener("keydown", this.gameOverListener)
-        }
-        this.messageField.text = (b) ? "GAME OVER press space to restart" : ""
+    public showGameOver(){
+        if (this.score > this.hiscore) this.hiscore = this.score
+        this.hiScoreField.text = `High Score : ${this.hiscore}`
+        this.messageField.text =  "GAME OVER press space to restart"
+        window.addEventListener("keydown", this.gameOverListener)
     }
 
     private restartGame(e:Event){
-        if (this.score > this.hiscore) this.hiscore = this.score
+        window.removeEventListener("keydown", this.gameOverListener)
+        this.messageField.text = ""
         this.score = 0
-        this.game.toggleGameOver(false)
+        this.scoreField.text = `Score : 0`
+        this.game.restart()
     }
 }

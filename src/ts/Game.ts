@@ -59,28 +59,28 @@ export class Game {
 
 
     private update(delta:number) {
-        if(!this.go) {
-            this.bg.update()
-            this.flappy.update()
-            this.pipes.update()
-            this.checkCollisions()
-        }
+        this.bg.update()
+        this.flappy.update()
+        this.pipes.update()
+        this.checkCollisions()
     }
 
 
     private checkCollisions() {
         if (this.flappy.y > this.pixi.screen.height + 80 || this.pipes.hitsFlappy(this.flappy)) {
-            this.toggleGameOver(true)
+            this.showGameOver()
         }
     }
 
-    public toggleGameOver(b:boolean){
-        this.go = b
-        this.ui.showGameOver(b)
-        if(!b){
-            this.flappy.restartFlappy()
-            this.pipes.resetPosition()
-        }
+    private showGameOver(){
+        this.pixi.stop()
+        this.ui.showGameOver()
+    }
+
+    public restart(){
+        this.flappy.restartFlappy()
+        this.pipes.resetPosition()
+        this.pixi.start()
     }
 
 }
